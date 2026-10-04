@@ -281,7 +281,7 @@ Benign Analysis
 ## 1. Clone the repository
 
 ```bash
-git clone <YOUR-GITHUB-REPOSITORY-URL>
+git clone (https://github.com/Bhavesh13s/Spoor-Evidence-Backed-Cyber-Attack-Reconstruction.git)
 cd spoor
 ```
 
