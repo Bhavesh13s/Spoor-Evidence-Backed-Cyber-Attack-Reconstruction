@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spoor — follow the intruder's trail</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230B1120'/%3E%3Ccircle cx='8' cy='22' r='3' fill='%234B6A8A'/%3E%3Ccircle cx='16' cy='14' r='3.4' fill='%239A5FA3'/%3E%3Ccircle cx='24' cy='9' r='4' fill='%23E0457B'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── DESIGN TOKENS ── */
+:root{
+  --bg:#080E1A; --bg2:#0D1526; --panel:#111B2E; --panel2:#162035;
+  --ink:#E2E8F0; --muted:#7B8CA6; --rule:#1E2D45; --soft:#0F1929;
+  --blue:#3B82F6; --blue-dim:#1E3A5F;
+  --red:#E0457B; --red-bg:rgba(224,69,123,.08); --red-border:rgba(224,69,123,.25);
+  --teal:#10B981; --teal-bg:rgba(16,185,129,.08); --teal-border:rgba(16,185,129,.25);
+  --amber:#F59E0B; --amber-bg:rgba(245,158,11,.08);
+  --orange:#F97316;
+  --purple:#A78BFA; --purple-bg:rgba(167,139,250,.06);
+  --s0:#4B6A8A; --s1:#6B5FA8; --s2:#9A5FA3; --s3:#B84F8F; --s4:#C43D73; --s5:#E0457B;
+  --gradient:linear-gradient(135deg, #E0457B 0%, #9A5FA3 50%, #3B82F6 100%);
+  --sans:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box} html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+::selection{background:rgba(59,130,246,.3)}
+.mono{font-family:var(--mono)}
+
+/* ── HEADER ── */
+header.top{position:sticky;top:0;z-index:20;background:rgba(8,14,26,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--rule)}
+.top-in{max-width:1360px;margin:0 auto;padding:10px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:19px;letter-spacing:-.02em;color:#fff}
+.brand small{font-weight:400;color:var(--muted);font-size:12px;letter-spacing:.02em;text-transform:uppercase}
+nav.tabs{display:flex;gap:2px;margin-left:8px}
+nav.tabs button{padding:7px 14px;border-radius:8px;color:var(--muted);font-weight:500;font-size:13px;transition:all .2s}
+nav.tabs button:hover:not([disabled]){color:var(--ink);background:var(--panel)}
+nav.tabs button[aria-selected=true]{background:var(--blue);color:#fff}
+nav.tabs button[disabled]{display:none}
+.spacer{flex:1}
+.btn{border:1px solid var(--rule);background:var(--panel);padding:8px 16px;border-radius:10px;font-weight:500;font-size:13px;display:inline-flex;gap:8px;align-items:center;text-decoration:none;color:var(--ink);transition:all .2s}
+.btn:hover{border-color:#3A4D6A;background:var(--panel2);transform:translateY(-1px)}
+.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
+.btn.primary:hover{background:#2563EB;box-shadow:0 4px 20px rgba(59,130,246,.3)}
+.btn.dark{background:#fff;border-color:#fff;color:var(--bg);font-weight:600}
+.btn.dark:hover{background:#E2E8F0}
+.btn.danger{background:var(--red);border-color:var(--red);color:#fff;font-weight:600}
+.btn.danger:hover{box-shadow:0 4px 20px rgba(224,69,123,.3)}
+.btn[disabled]{opacity:.5;cursor:wait;transform:none!important}
+.btn.sm{padding:5px 10px;font-size:12px;border-radius:7px}
+.btn.lg{padding:12px 28px;font-size:16px;border-radius:12px;letter-spacing:-.01em}
+input.seed{width:120px;padding:7px 10px;border:1px solid var(--rule);border-radius:9px;font:13px var(--sans);background:var(--panel);color:var(--ink)}
+input.seed::placeholder{color:var(--muted)}
+main{max-width:1360px;margin:0 auto;padding:24px}
+.panel{background:var(--panel);border:1px solid var(--rule);border-radius:14px}
+.pad{padding:20px}
+h1,h2,h3,h4{margin:0;letter-spacing:-.02em;color:#fff}
+h2{font-size:18px} h3{font-size:15px}
+.muted{color:var(--muted)} .small{font-size:12px}
+.label{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+
+/* ── CHIPS & SEVERITY ── */
+.chip{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--rule);background:var(--soft);padding:2px 9px;border-radius:99px;font-size:11.5px;white-space:nowrap;color:var(--muted)}
+.chip .dot{width:7px;height:7px;border-radius:50%}
+.sev{font-weight:700;border:0;color:#fff;padding:3px 12px;font-size:11px;letter-spacing:.04em;text-transform:uppercase}
+.sev.critical{background:var(--red)} .sev.high{background:var(--orange)} .sev.medium{background:var(--amber)} .sev.low{background:var(--muted)}
+
+/* ── HERO ── */
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:stretch;margin-top:16px}
+@media(max-width:900px){.hero{grid-template-columns:1fr}}
+.hero-l{padding:48px 44px}
+.hero .tagline{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--red);margin-bottom:16px}
+.hero h1{font-size:42px;line-height:1.08;margin-bottom:16px;font-weight:800;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{max-width:54ch;color:var(--muted);font-size:15px;margin:0 0 28px;line-height:1.7}
+.hero p strong{color:var(--ink)}
+.hero .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.hero-r{padding:28px;background:linear-gradient(145deg,#0D1526 0%,#111B2E 100%);border:1px solid var(--rule);border-radius:14px;display:flex;flex-direction:column;gap:18px;overflow:hidden;position:relative}
+.hero-r::before{content:"";position:absolute;top:0;right:0;width:200px;height:200px;background:radial-gradient(circle,rgba(224,69,123,.06) 0%,transparent 70%);pointer-events:none}
+.hero-r .logline{font:12px/1.85 var(--mono);color:var(--muted);white-space:pre-wrap;word-break:break-all}
+.hero-r .logline b{color:var(--red);font-weight:500}
+.hero-r .logline i{color:var(--teal);font-style:normal;opacity:.7}
+.hero-r .logline .corr{color:var(--purple);font-weight:500}
+.hero-r strong{color:#fff;font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px}
+.hero-r strong::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 8px var(--red);animation:pulse-dot 2s ease-in-out infinite}
+@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* ── DIFFERENTIATOR CARDS ── */
+.features{display:grid;gap:16px;margin-top:24px;grid-template-columns:repeat(3,1fr)}
+@media(max-width:800px){.features{grid-template-columns:1fr}}
+.feat{padding:28px 24px;position:relative;overflow:hidden;transition:border-color .2s,transform .2s}
+.feat:hover{border-color:#2A3D5A;transform:translateY(-2px)}
+.feat .feat-icon{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;margin-bottom:14px;font-size:18px}
+.feat h3{font-size:15px;margin-bottom:8px;font-weight:700}
+.feat p{color:var(--muted);font-size:13px;margin:0;line-height:1.65}
+.feat.f1 .feat-icon{background:var(--red-bg);border:1px solid var(--red-border);color:var(--red)}
+.feat.f2 .feat-icon{background:var(--teal-bg);border:1px solid var(--teal-border);color:var(--teal)}
+.feat.f3 .feat-icon{background:var(--purple-bg);border:1px solid rgba(167,139,250,.2);color:var(--purple)}
+
+/* ── HOW SPOOR WORKS STRIP ── */
+.archstrip{margin-top:32px;padding:28px 32px;display:flex;align-items:center;gap:0;justify-content:center;flex-wrap:wrap}
+.archstrip .anode{text-align:center;padding:8px 18px}
+.archstrip .anode b{display:block;font-size:13px;font-weight:700;color:#fff;margin-bottom:2px}
+.archstrip .anode span{font-size:11px;color:var(--muted)}
+.archstrip .aarrow{color:var(--muted);font-size:18px;padding:0 6px;opacity:.5}
+
+/* ── STATS BAR ── */
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;align-items:stretch}
+.stat{padding:14px 18px;min-width:120px;position:relative}
+.stat b{font-size:28px;letter-spacing:-.03em;display:block;line-height:1.1;font-weight:800}
+.stat span{color:var(--muted);font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.04em}
+.stat.threat b{color:var(--red)}
+.stat.safe b{color:var(--teal)}
+
+/* ── DATASET (PRE-ANALYSIS) ── */
+.ds-hero{text-align:center;padding:60px 40px}
+.ds-hero .ds-chip{display:inline-flex;align-items:center;gap:6px;background:var(--soft);border:1px solid var(--rule);padding:5px 16px;border-radius:99px;font-size:12px;color:var(--muted);margin-bottom:24px}
+.ds-hero h2{font-size:32px;font-weight:800;color:#fff;margin-bottom:8px}
+.ds-hero .ds-subtitle{color:var(--muted);font-size:15px;max-width:60ch;margin:0 auto 32px;line-height:1.7}
+.ds-stats{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:32px}
+.ds-stat{text-align:center;min-width:100px}
+.ds-stat b{font-size:32px;font-weight:800;color:#fff;display:block}
+.ds-stat span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;font-weight:500}
+.ds-pipeline{display:flex;gap:4px;justify-content:center;flex-wrap:wrap;margin-bottom:36px;align-items:center}
+.ds-pipeline .pip{font-size:12px;color:var(--muted);padding:4px 12px;background:var(--soft);border:1px solid var(--rule);border-radius:6px}
+.ds-pipeline .pip-arrow{color:var(--muted);font-size:14px;opacity:.4}
+
+/* ── TWO-COLUMN LAYOUT ── */
+.cols{display:grid;grid-template-columns:330px 1fr;gap:20px;align-items:start}
+@media(max-width:1000px){.cols{grid-template-columns:1fr}}
+.side{position:sticky;top:70px;display:grid;gap:12px}
+@media(max-width:1000px){.side{position:static}}
+.seg{display:flex;background:var(--soft);border:1px solid var(--rule);border-radius:9px;padding:3px;gap:2px}
+.seg button{flex:1;border:0;background:none;padding:6px 4px;border-radius:7px;font-size:12px;color:var(--muted);font-weight:500;transition:all .15s}
+.seg button[aria-selected=true]{background:var(--panel2);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.list{display:grid;gap:8px}
+.item{width:100%;text-align:left;border:1px solid var(--rule);background:var(--panel);border-radius:12px;padding:14px 16px;display:grid;gap:8px;cursor:pointer;transition:all .2s}
+.item:hover{border-color:#2A3D5A;background:var(--panel2)}
+.item[aria-current=true]{border-color:var(--red);box-shadow:inset 3px 0 0 var(--red),0 0 20px rgba(224,69,123,.06)}
+.item .t{font-weight:600;font-size:13px;line-height:1.35;color:#fff}
+.item .meta{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.item .item-time{font-size:11px;color:var(--muted)}
+.empty{padding:24px;color:var(--muted);font-size:13px;border:1px dashed var(--rule);border-radius:12px;background:var(--soft);text-align:center}
+
+/* ── INCIDENT DETAIL ── */
+.head{padding:24px 28px;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center}
+@media(max-width:700px){.head{grid-template-columns:1fr}}
+.head h2{font-size:24px;line-height:1.2;margin:6px 0 4px;font-weight:800}
+.head .head-meta{font-size:12px;color:var(--muted);display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+.head .head-meta b{color:var(--ink);font-weight:600}
+.ring{--v:0;width:88px;height:88px;border-radius:50%;background:conic-gradient(var(--red) calc(var(--v)*1%),var(--rule) 0);display:grid;place-items:center;flex-shrink:0}
+.ring>div{width:68px;height:68px;border-radius:50%;background:var(--panel);display:grid;place-items:center;text-align:center;line-height:1.1}
+.ring b{font-size:22px;letter-spacing:-.03em;color:#fff} .ring span{font-size:10px;color:var(--muted);display:block;text-transform:uppercase;letter-spacing:.04em}
+
+/* ── KILL CHAIN STRIP ── */
+.trailstrip{display:grid;grid-template-columns:repeat(6,1fr);gap:0;padding:8px 28px 24px;position:relative}
+.stg{position:relative;text-align:center;padding-top:28px;font-size:11.5px;color:#4A5A72;font-weight:500;transition:all .3s}
+.stg::before{content:"";position:absolute;top:8px;left:0;right:0;height:2px;background:var(--rule)}
+.stg:first-child::before{left:50%} .stg:last-child::before{right:50%}
+.stg::after{content:"";position:absolute;top:2px;left:calc(50% - 8px);width:16px;height:16px;border-radius:50%;background:var(--bg);border:2px solid var(--rule);transition:all .3s}
+.stg small{display:block;font-weight:400;color:var(--muted);font-size:10px;margin-top:2px}
+.stg.on{color:#fff;font-weight:700}
+.stg.on::after{background:var(--c);border-color:var(--c);box-shadow:0 0 10px color-mix(in srgb, var(--c) 40%, transparent)}
+.stg.on::before{background:var(--c)}
+.stg.dim{opacity:.25}
+
+/* ── REPLAY TOOLBAR ── */
+.toolbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:14px 28px;border-top:1px solid var(--rule);background:var(--soft)}
+.toolbar input[type=range]{flex:1;min-width:140px;accent-color:var(--red)}
+.replay-badge{display:inline-flex;align-items:center;gap:6px;background:var(--red-bg);border:1px solid var(--red-border);color:var(--red);padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+
+/* ── SECTIONS ── */
+.sect{padding:24px 28px}
+.sect-title{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.sect-title h3{font-size:16px;font-weight:700}
+.sect-title .sect-badge{font-size:11px;color:var(--muted);background:var(--soft);border:1px solid var(--rule);padding:2px 10px;border-radius:99px}
+.sect-divider{border:0;border-top:1px solid var(--rule);margin:0}
+
+/* ── STORY ── */
+.story p{margin:0 0 12px;max-width:88ch;color:var(--muted);line-height:1.75;font-size:13.5px}
+.story p b{font-weight:600;color:var(--ink)}
+
+/* ── TIMELINE ── */
+.tl{position:relative;display:grid;gap:16px;padding-left:36px}
+.tl::before{content:"";position:absolute;left:11px;top:8px;bottom:8px;width:2px;border-radius:2px;background:linear-gradient(var(--s0),var(--s3) 55%,var(--s5))}
+.step{position:relative;border:1px solid var(--rule);border-radius:12px;padding:16px 18px;background:var(--panel);transition:all .3s}
+.tl .step::before{content:"";position:absolute;left:-32px;top:20px;width:14px;height:14px;border-radius:50%;background:var(--c);border:3px solid var(--panel);box-shadow:0 0 0 2px var(--c)}
+.step.dim{opacity:.18}
+.step.now{border-color:var(--red);box-shadow:0 0 0 3px rgba(224,69,123,.12),0 0 30px rgba(224,69,123,.06)}
+.step .row1{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
+.step .time{font:500 12px var(--mono);color:var(--muted)}
+.step h4{font-size:14px;line-height:1.4;margin-bottom:4px;color:#fff}
+.step p{margin:0;color:var(--muted);font-size:13px;max-width:88ch;line-height:1.6}
+.conf{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--muted)}
+.conf i{display:inline-block;width:50px;height:5px;border-radius:3px;background:var(--rule);overflow:hidden}
+.conf i::after{content:"";display:block;height:100%;width:var(--w);background:var(--c)}
+.notes{margin-top:8px;display:grid;gap:3px;font-size:12px}
+.notes .up{color:var(--red)} .notes .down{color:var(--teal)}
+.evbtn{margin-top:10px}
+
+/* ── EVIDENCE ── */
+.evidence{margin-top:10px;border:1px solid var(--rule);border-radius:10px;background:#060C16;color:#94A3B8;font:11.5px/1.7 var(--mono);padding:12px 14px;overflow:auto;max-height:280px}
+.evidence div{white-space:pre}
+.evidence .loc{color:var(--s0);user-select:none;font-weight:500}
+
+/* ── GRAPH ── */
+.graphwrap{overflow-x:auto;padding:8px 0}
+svg.graph{width:100%;min-width:640px;height:auto;display:block}
+.g-node rect{fill:var(--panel);stroke:var(--muted);stroke-width:1.2;rx:8}
+.g-node.ip rect{stroke:var(--red);fill:var(--red-bg)}
+.g-node.dst rect{stroke:var(--red);fill:var(--red)}
+.g-node.dst text{fill:#fff}
+.g-node.host rect{fill:var(--panel2);stroke:#4B6A8A} .g-node.host text{fill:var(--ink)}
+.g-node.user rect{fill:rgba(59,130,246,.08);stroke:var(--blue)}
+.g-node text{font:500 11.5px var(--mono);fill:var(--ink)}
+.g-edge{fill:none;stroke:#4B6A8A;stroke-width:1.5}
+.g-edge.dashed{stroke:var(--red);stroke-dasharray:6 4;stroke-width:2}
+.g-lbl{font:11px var(--sans);fill:var(--muted)}
+.g-node,.g-edge,.g-lbl{transition:opacity .3s}
+.faded{opacity:.1}
+.colhead{font:600 10.5px var(--sans);fill:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+
+/* ── TWO COL ── */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:900px){.two{grid-template-columns:1fr}}
+
+/* ── LISTS ── */
+ul.plain{margin:0;padding-left:18px;display:grid;gap:6px;color:var(--muted);font-size:13px} ul.plain li{max-width:80ch;line-height:1.6}
+ul.checks{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+ul.checks li{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--ink);line-height:1.5}
+ul.checks li::before{content:"";flex:none;width:18px;height:18px;margin-top:2px;border-radius:50%;background:var(--teal) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.6 2.6L12 5.6' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/100%}
+ul.checks.warn li::before{background-color:var(--amber);background-image:none}
+details{border-top:1px solid var(--rule)} details summary{cursor:pointer;padding:12px 0;font-weight:600;font-size:13px;color:var(--muted)}
+details summary:hover{color:var(--ink)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-weight:600;color:var(--muted);font-size:11px;background:var(--soft);text-transform:uppercase;letter-spacing:.04em}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.bar{display:inline-block;width:72px;height:6px;border-radius:3px;background:var(--rule);vertical-align:middle;overflow:hidden;margin-right:8px}
+.bar::after{content:"";display:block;height:100%;width:var(--w);background:var(--c,var(--red))}
+
+/* ── EVAL CARDS ── */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.card{padding:18px 20px;text-align:center}
+.card b{font-size:32px;letter-spacing:-.03em;display:block;line-height:1.1;font-weight:800;color:#fff}
+.card span{color:var(--muted);font-size:12px;margin-top:4px;display:block}
+.card.good b{color:var(--teal)}
+
+/* ── TABLE WRAP ── */
+.tablewrap{overflow-x:auto}
+
+/* ── LOADING ── */
+.loading{display:grid;place-items:center;gap:16px;padding:80px 20px;text-align:center}
+.loading b{color:#fff;font-size:16px}
+.spin{width:28px;height:28px;border-radius:50%;border:3px solid var(--rule);border-top-color:var(--red);animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.loading-stages{display:flex;flex-direction:column;gap:6px;align-items:flex-start;text-align:left;margin-top:8px}
+.loading-stages .lstage{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.loading-stages .lstage.done{color:var(--teal)}
+.loading-stages .lstage.active{color:var(--ink)}
+.loading-stages .lstage .lcheck{width:16px;text-align:center}
+
+/* ── TOASTS ── */
+#toasts{position:fixed;right:18px;bottom:18px;display:grid;gap:8px;z-index:50;max-width:min(420px,calc(100vw - 36px))}
+.toast{background:var(--panel2);color:var(--ink);padding:14px 18px;border-radius:12px;font-size:13px;box-shadow:0 8px 32px rgba(0,0,0,.5);border:1px solid var(--rule)}
+.toast.err{background:rgba(224,69,123,.15);border-color:var(--red-border);color:var(--red)}
+
+/* ── ACTIONS LIST ── */
+.actions-list{list-style:none;margin:0;padding:0;display:grid;gap:10px;counter-reset:act}
+.actions-list li{counter-increment:act;display:flex;gap:12px;align-items:flex-start;font-size:13px;color:var(--ink);line-height:1.6}
+.actions-list li::before{content:counter(act,decimal-leading-zero);flex:none;width:28px;height:28px;border-radius:8px;background:var(--blue-dim);color:var(--blue);font-size:12px;font-weight:700;display:grid;place-items:center}
+
+/* ── RESPONSIVE ── */
+@media(max-width:700px){.head{grid-template-columns:1fr} .hero h1{font-size:28px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in">
+  <div class="brand">
+    <svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0B1120"/><circle cx="8" cy="22" r="3" fill="#4B6A8A"/><circle cx="16" cy="14" r="3.4" fill="#9A5FA3"/><circle cx="24" cy="9" r="4" fill="#E0457B"/></svg>
+    Spoor <small>follow the intruder's trail</small>
+  </div>
+  <nav class="tabs" role="tablist" aria-label="Views">
+    <button role="tab" aria-selected="true" data-tab="incidents">Incidents</button>
+    <button role="tab" aria-selected="false" data-tab="entities" disabled>Suspects</button>
+    <button role="tab" aria-selected="false" data-tab="quality" disabled>Data Quality</button>
+    <button role="tab" aria-selected="false" data-tab="eval" disabled>Accuracy</button>
+  </nav>
+  <div class="spacer"></div>
+  <input class="seed" id="seed" type="number" min="0" placeholder="Seed" aria-label="Scenario seed (optional)">
+  <button class="btn primary" id="btn-gen">Generate Attack Scenario</button>
+  <button class="btn" id="btn-up">Upload Logs</button>
+  <input type="file" id="file" multiple hidden accept=".log,.txt,.csv,.json,.jsonl,.ndjson">
+</div></header>
+
+<main id="main"></main>
+<div id="toasts" role="status" aria-live="polite"></div>
+
+<script>
+"use strict";
+const $ = (s, r=document) => r.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const STAGE_COL = ["#4B6A8A","#6B5FA8","#9A5FA3","#B84F8F","#C43D73","#E0457B"];
+const STAGES = ["Reconnaissance","Credential Access","Initial Access","Privilege Escalation","Persistence","Exfiltration"];
+const S = { sid: sessionStorage.getItem("spoor.sid"), dataset: null, report: null, tab: "incidents", list: "incidents",
+            sel: null, timer: null, busy: false, evalRes: null };
+
+function toast(msg, err=false){
+  const t = document.createElement("div"); t.className = "toast" + (err ? " err" : ""); t.textContent = msg;
+  $("#toasts").appendChild(t); setTimeout(() => t.remove(), err ? 7000 : 3500);
+}
+async function api(path, opts={}){
+  const h = Object.assign({}, opts.headers || {}); if (S.sid) h["X-Session"] = S.sid;
+  let res;
+  try { res = await fetch(path, Object.assign({}, opts, {headers: h})); }
+  catch(e){ throw new Error("Cannot reach the server. Check your connection and try again."); }
+  if (!res.ok){
+    let d = ""; try { d = (await res.json()).detail; } catch(_){}
+    throw new Error(typeof d === "string" && d ? d : `Request failed (${res.status}).`);
+  }
+  return res;
+}
+const fmtT = iso => iso ? iso.slice(11, 19) : "";
+const fmtD = iso => iso ? new Date(iso).toLocaleDateString("en-GB", {day:"numeric", month:"short", timeZone:"UTC"}) : "";
+const num = n => Number(n).toLocaleString("en-US");
+const lockBtns = on => ["btn-gen","btn-up"].forEach(id => $("#"+id).disabled = on);
+
+function busyView(label, stages){
+  const stagesHtml = stages ? `<div class="loading-stages">${stages.map((s,i) =>
+    `<div class="lstage${i===stages.length-1?' active':' done'}"><span class="lcheck">${i===stages.length-1?'●':'✓'}</span>${esc(s)}</div>`
+  ).join("")}</div>` : "";
+  $("#main").innerHTML = `<div class="panel loading"><div class="spin"></div><div><b>${esc(label)}</b><div class="muted small" style="margin-top:4px">This usually takes a few seconds.</div>${stagesHtml}</div></div>`;
+}
+async function generate(){
+  if (S.busy) return; S.busy = true; lockBtns(true); stopReplay(); S.report = null; S.sel = null; S.evalRes = null;
+  busyView("Generating attack scenario…", ["Creating 3 days of background traffic", "Hiding a multi-stage attack", "Planting 4 benign decoys"]);
+  try {
+    const seedV = $("#seed").value.trim();
+    const body = JSON.stringify(seedV === "" ? {} : {seed: parseInt(seedV, 10)});
+    const r = await api("/api/generate", {method:"POST", headers:{"Content-Type":"application/json"}, body});
+    S.dataset = await r.json(); S.sid = S.dataset.sid; sessionStorage.setItem("spoor.sid", S.sid);
+  } catch(e){ toast(e.message, true); }
+  S.busy = false; lockBtns(false); S.tab = "incidents"; render();
+}
+async function upload(files){
+  if (S.busy || !files.length) return; S.busy = true; lockBtns(true); stopReplay(); S.report = null; S.sel = null; S.evalRes = null;
+  busyView(`Reading ${files.length} file${files.length>1?"s":""}…`);
+  try {
+    const fd = new FormData(); [...files].forEach(f => fd.append("files", f));
+    const r = await api("/api/upload", {method:"POST", body: fd});
+    S.dataset = await r.json(); S.sid = S.dataset.sid; sessionStorage.setItem("spoor.sid", S.sid);
+  } catch(e){ toast(e.message, true); }
+  S.busy = false; lockBtns(false); $("#file").value = ""; S.tab = "incidents"; render();
+}
+async function analyze(){
+  if (S.busy) return; S.busy = true; lockBtns(true);
+  busyView(`Analyzing ${num(S.dataset.events)} events…`, ["Normalizing events to UTC", "Building behavioral baselines", "Running 6 detection rules", "Correlating related activity", "Reconstructing attack timeline"]);
+  try {
+    const r = await api("/api/analyze", {method:"POST"}); S.report = await r.json();
+    S.sel = S.report.incidents[0]?.id || null; S.list = S.report.incidents.length ? "incidents" : "alerts";
+  } catch(e){ toast(e.message, true); }
+  S.busy = false; lockBtns(false); render();
+}
+
+function render(){
+  stopReplay();
+  const has = !!S.dataset, done = !!S.report;
+  document.querySelectorAll("nav.tabs button").forEach(b => {
+    const t = b.dataset.tab;
+    b.setAttribute("aria-selected", String(S.tab === t));
+    b.disabled = t !== "incidents" && !(done && (t !== "eval" || S.dataset.synthetic));
+  });
+  const m = $("#main");
+  if (!has) { m.innerHTML = heroView(); return; }
+  if (!done) { m.innerHTML = datasetView(); return; }
+  m.innerHTML = statsBar() + ({incidents: incidentsView, entities: entitiesView, quality: qualityView, eval: evalView}[S.tab])();
+  bindReport();
+  if (S.tab === "eval" && !S.evalRes) loadEval();
+}
+
+function heroView(){
+  return `<section class="hero">
+    <div class="panel hero-l">
+      <div class="tagline">Every attack leaves a trail</div>
+      <h1>Find the attack hiding in the noise.</h1>
+      <p><strong>Spoor</strong> turns thousands of security events into one evidence-backed attack story — showing how an intruder got in, what they did, and why we believe it.</p>
+      <div class="row">
+        <button class="btn primary lg" data-act="gen">Generate Attack Scenario</button>
+        <button class="btn lg" data-act="up">Upload Your Logs</button>
+      </div>
+      <p class="small muted" style="margin:20px 0 0">Demo mode generates a fresh randomized attack hidden inside thousands of security events. A new attack is randomised each time, so nobody — including us — knows where it is until Spoor finds it.</p>
+    </div>
+    <div class="hero-r" aria-hidden="true">
+      <strong>What the attacker leaves behind</strong>
+      <div class="logline"><i>access.log</i>  45.7.x.x "GET /.env" 404 "<b>Nikto/2.5.0</b>"
+<i>auth.log</i>    Failed password for <b>invalid user admin</b> from 45.7.x.x
+<i>auth.log</i>    Failed password for deploy from <b>138.2.x.x</b> ...x34
+<i>auth.log</i>    Accepted password for <b>deploy</b> from 138.2.x.x
+<i>auth.log</i>    sudo: deploy : COMMAND=<b>/bin/cat /etc/shadow</b>
+<i>flows.csv</i>   web01 -> <b>194.2.x.x</b> bytes_out=<b>231,735,296</b></div>
+      <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--muted)"></span><span class="small muted">Normal event</span>
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--red)"></span><span class="small muted">Suspicious</span>
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--purple)"></span><span class="small muted">Correlated</span>
+      </div>
+      <span class="small muted" style="opacity:.7">Hundreds of lines like these, buried in normal traffic. Spoor finds the connections hidden inside them.</span>
+    </div>
+  </section>
+  <div class="features">
+    <div class="panel feat f1"><div class="feat-icon">⛓</div><h3>Reconstructs the Attack</h3><p>Connects users, IPs, hosts and events into one campaign — even when the attacker changes IP addresses mid-attack.</p></div>
+    <div class="panel feat f2"><div class="feat-icon">🔍</div><h3>Proves Every Step</h3><p>Every finding traces back to the raw log evidence — file name and line number — that triggered it. No black boxes.</p></div>
+    <div class="panel feat f3"><div class="feat-icon">🧪</div><h3>Explains False Alarms</h3><p>Suspicious-looking activity is tested against benign explanations — on-call admins, typos, scanners — before becoming an incident.</p></div>
+  </div>
+  <div class="panel archstrip" style="margin-top:24px">
+    <div class="anode"><b>Ingest</b><span>Parse & normalize</span></div><span class="aarrow">→</span>
+    <div class="anode"><b>Detect</b><span>6 rule engines</span></div><span class="aarrow">→</span>
+    <div class="anode"><b>Correlate</b><span>8 link rules</span></div><span class="aarrow">→</span>
+    <div class="anode"><b>Reconstruct</b><span>Kill-chain mapping</span></div><span class="aarrow">→</span>
+    <div class="anode"><b>Explain</b><span>Evidence + narrative</span></div>
+  </div>
+  <div class="muted small" style="text-align:center;margin-top:10px;opacity:.6">Raw logs → suspicious events → related activity → attack campaign → evidence-backed investigation</div>`;
+}
+
+function fileTable(files){
+  const rows = files.map(f => `<tr><td class="mono">${esc(f.name)}</td><td>${esc(f.format)}</td><td class="num">${num(f.lines)}</td><td class="num">${num(f.parsed)}</td><td class="num">${num(f.ignored)}</td><td class="num">${num(f.quarantined)}</td></tr>`).join("");
+  return `<table><thead><tr><th>File</th><th>Format</th><th class="num">Lines</th><th class="num">Parsed</th><th class="num">Ignored</th><th class="num">Set aside</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+
+function datasetView(){
+  const d = S.dataset;
+  const warn = d.warnings.map(w => `<li>${esc(w)}</li>`).join("");
+  const srcCount = d.files.length;
+  return `<div class="panel">
+    <div class="ds-hero">
+      <div class="ds-chip">${d.synthetic ? "Synthetic scenario" + (d.seed != null ? " · seed " + d.seed : "") : "Uploaded logs"}</div>
+      <h2>Attack Scenario Ready</h2>
+      <div class="ds-stats">
+        <div class="ds-stat"><b>${num(d.events)}</b><span>Events</span></div>
+        <div class="ds-stat"><b>${srcCount}</b><span>Log Sources</span></div>
+        ${d.synthetic ? `<div class="ds-stat"><b>1</b><span>Hidden Attack</span></div><div class="ds-stat"><b>4</b><span>Benign Decoys</span></div>` : ""}
+      </div>
+      <div class="ds-subtitle">Spoor will normalize the events, detect suspicious behavior, correlate related activity, and reconstruct the attack timeline.</div>
+      <div class="ds-pipeline">
+        <span class="pip">Normalize</span><span class="pip-arrow">→</span>
+        <span class="pip">Detect</span><span class="pip-arrow">→</span>
+        <span class="pip">Correlate</span><span class="pip-arrow">→</span>
+        <span class="pip">Reconstruct</span><span class="pip-arrow">→</span>
+        <span class="pip">Explain</span>
+      </div>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+        <button class="btn primary lg" data-act="analyze">Analyze ${num(d.events)} Events →</button>
+        ${d.synthetic ? `<a class="btn lg" href="/api/download/logs?sid=${esc(S.sid)}">Download Logs</a>` : ""}
+      </div>
+    </div>
+    <div class="sect tablewrap" style="padding-top:0">${fileTable(d.files)}
+      ${warn ? `<ul class="plain small" style="margin-top:12px;color:var(--amber)">${warn}</ul>` : ""}</div></div>`;
+}
+
+function statsBar(){
+  const s = S.report.stats;
+  return `<div class="stats">
+    <div class="panel stat threat"><b>${s.incidents}</b><span>Incidents</span></div>
+    <div class="panel stat"><b>${S.report.incidents[0]?.stages?.length || 0}</b><span>Attack Stages</span></div>
+    <div class="panel stat"><b>${S.report.incidents[0]?.ips?.length || 0}</b><span>Attacker IPs</span></div>
+    <div class="panel stat"><b>${num(s.events)}</b><span>Events Analyzed</span></div>
+    <div class="panel stat safe"><b>${s.suppressed}</b><span>Explained Away</span></div>
+    <div class="panel stat"><b>${s.analysis_ms}ms</b><span>Analysis Time</span></div>
+    <div class="spacer"></div>
+    <div style="display:flex;gap:8px;align-items:center"><a class="btn" href="/api/report.json?sid=${esc(S.sid)}">Export Report</a></div>
+  </div>`;
+}
+
+function incidentsView(){
+  const R = S.report, L = S.list;
+  const seg = `<div class="seg" role="tablist">
+    ${[["incidents",`Incidents (${R.incidents.length})`],["alerts",`Alerts (${R.alerts.length})`],["suppressed",`Not Flagged (${R.suppressed.length})`]]
+      .map(([k,l]) => `<button role="tab" aria-selected="${L===k}" data-list="${k}">${l}</button>`).join("")}</div>`;
+  let items = "";
+  if (L === "incidents"){
+    items = R.incidents.length ? R.incidents.map(i => `<button class="item" data-inc="${i.id}" aria-current="${S.sel===i.id}">
+      <div class="meta"><span class="chip sev ${i.severity}">${i.severity} ${i.score}%</span><span class="chip">${i.ips.length} IP${i.ips.length>1?"s":""}</span><span class="chip">${i.stages.length} stages</span></div>
+      <div class="t">${esc(i.title)}</div><div class="item-time">${fmtD(i.start)}, ${fmtT(i.start)}–${fmtT(i.end)} UTC · ${i.steps.length} findings · ${num(i.evidence_total)} evidence lines</div></button>`).join("")
+      : `<div class="empty">No multi-step attack chains found. Isolated alerts, if any, are listed under Alerts.</div>`;
+  } else if (L === "alerts"){
+    items = R.alerts.length ? R.alerts.map((a,n) => `<button class="item" data-alert="${n}" aria-current="${S.sel==='a'+n}">
+      <div class="meta"><span class="chip">${esc(a.stage)}</span><span class="chip">${Math.round(a.confidence*100)}%</span></div><div class="t">${esc(a.title)}</div>
+      <div class="item-time">Single-stage activity with no link to a wider attack</div></button>`).join("")
+      : `<div class="empty">No isolated alerts.</div>`;
+  } else {
+    items = R.suppressed.length ? R.suppressed.map((a,n) => `<button class="item" data-sup="${n}" aria-current="${S.sel==='s'+n}">
+      <div class="meta"><span class="chip">${esc(a.stage)}</span><span class="chip">${Math.round(a.confidence*100)}% after review</span></div><div class="t">${esc(a.title)}</div></button>`).join("")
+      : `<div class="empty">Nothing was set aside.</div>`;
+  }
+  return `<div class="cols"><aside class="side"><div class="panel pad" style="padding:14px;display:grid;gap:12px">${seg}<div class="list">${items}</div></div></aside><section id="detail">${detailView()}</section></div>`;
+}
+
+function detailView(){
+  const R = S.report;
+  if (S.list === "incidents"){
+    const inc = R.incidents.find(i => i.id === S.sel); return inc ? incidentDetail(inc) : `<div class="panel empty">Select an incident to investigate.</div>`;
+  }
+  const arr = S.list === "alerts" ? R.alerts : R.suppressed;
+  const idx = parseInt(String(S.sel || "").slice(1), 10);
+  const f = Number.isInteger(idx) ? arr[idx] : null;
+  if (!f) return `<div class="panel empty">${S.list === "alerts" ? "Select an alert." : "Select an item to see why it was not raised."}</div>`;
+  const why = S.list === "suppressed" ? `<div class="sect"><div class="sect-title"><h3>Why This Was Not Raised</h3></div><div class="muted small" style="margin-bottom:8px">Starting confidence ${Math.round(f.base_confidence*100)}%, final ${Math.round(f.confidence*100)}%, below the threshold for an alert.</div>${f.benign.length ? `<ul class="checks">${f.benign.map(b => `<li>${esc(b.reason)} (-${Math.round(b.deduction*100)}%)</li>`).join("")}</ul>` : ""}</div>` : "";
+  return `<div class="panel" style="padding:16px"><div class="tl" style="padding-left:0">${stepHtml(f, 0, true)}</div>${why}</div>`;
+}
+
+function incidentDetail(inc){
+  const present = new Set(inc.stages);
+  const counts = {}; inc.steps.forEach(s => counts[s.stage] = (counts[s.stage]||0)+1);
+  const strip = STAGES.map((s,i) => `<div class="stg ${present.has(s)?"on":"dim"}" style="--c:${STAGE_COL[i]}" data-stage="${esc(s)}">${esc(s)}<small>${present.has(s) ? counts[s]+" finding"+(counts[s]>1?"s":"") : "—"}</small></div>`).join("");
+  const story = inc.story.map(p => `<p>${esc(p).replace(/^([A-Za-z ]+:)/, "<b>$1</b>")}</p>`).join("");
+  const bd = inc.score_breakdown.map(p => `<tr><td>${esc(p.label)}</td><td class="num">${p.kind==="bonus"?"+":""}${p.value}</td></tr>`).join("");
+
+  return `<div class="panel">
+    <!-- INCIDENT SUMMARY -->
+    <div class="head"><div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center"><span class="chip sev ${inc.severity}">${inc.severity}</span>${inc.hosts.map(h=>`<span class="chip mono">${esc(h)}</span>`).join("")}${inc.ips.map(i=>`<span class="chip mono"><span class="dot" style="background:var(--red)"></span>${esc(i)}</span>`).join("")}</div>
+        <h2>${esc(inc.title)}</h2>
+        <div class="head-meta">
+          <span><b>${inc.ips.length}</b> Attacker IPs</span>
+          <span><b>${inc.stages.length}</b> Attack Stages</span>
+          <span><b>${num(inc.evidence_total)}</b> Evidence Lines</span>
+          <span>${fmtD(inc.start)}, ${fmtT(inc.start)}–${fmtT(inc.end)} UTC (${inc.duration_min} min)</span>
+        </div></div>
+      <div class="ring" style="--v:${inc.score}" role="img" aria-label="Confidence ${inc.score} percent"><div><div><b>${inc.score}</b><span>Confidence</span></div></div></div></div>
+
+    <!-- ATTACK STORY (Kill Chain) -->
+    <div class="trailstrip" aria-label="Kill chain progress">${strip}</div>
+
+    <!-- REPLAY -->
+    <div class="toolbar">
+      <button class="btn danger sm" id="rp-play">▶ Play Attack</button>
+      <span class="replay-badge">Attack Replay</span>
+      <input type="range" id="rp-range" min="0" max="${inc.steps.length-1}" value="${inc.steps.length-1}" aria-label="Scrub through the attack timeline">
+      <span class="small muted" id="rp-label">All ${inc.steps.length} steps shown</span>
+    </div></div>
+
+  <!-- ATTACK NARRATIVE -->
+  <div class="panel sect story" style="margin-top:20px">
+    <div class="sect-title"><h3>Attack Narrative</h3><span class="sect-badge">Investigation reconstructed into a human-readable sequence</span></div>
+    ${story}</div>
+
+  <!-- ATTACK PATH -->
+  <div class="panel sect" style="margin-top:20px">
+    <div class="sect-title"><h3>Attack Path</h3><span class="sect-badge">How Spoor connected the evidence</span></div>
+    <div class="muted small" style="margin-bottom:10px">Solid lines = observed actions. Dashed lines = inferred correlations between attacker IPs.</div>
+    <div class="graphwrap">${graphSvg(inc.graph)}</div>
+    ${inc.link_summary.length ? `<details open><summary>Why these IPs and accounts were treated as one campaign</summary><ul class="plain small" style="margin-bottom:14px">${inc.link_summary.map(r=>`<li>${esc(r)}</li>`).join("")}</ul></details>` : ""}</div>
+
+  <!-- TIMELINE -->
+  <div class="panel sect" style="margin-top:20px">
+    <div class="sect-title"><h3>Evidence Timeline</h3><span class="sect-badge">${inc.steps.length} findings · ${num(inc.evidence_total)} log lines</span></div>
+    <div class="tl" id="tl">${inc.steps.map((s,i)=>stepHtml(s,i)).join("")}</div></div>
+
+  <!-- FALSE POSITIVE + ACTIONS -->
+  <div class="two" style="margin-top:20px">
+    <div class="panel sect">
+      <div class="sect-title"><h3>Why This Isn't a False Alarm</h3></div>
+      <div class="muted small" style="margin-bottom:10px">Spoor tested the incident against alternative benign explanations:</div>
+      ${inc.ruled_out.length ? `<ul class="checks">${inc.ruled_out.map(r=>`<li>${esc(r)}</li>`).join("")}</ul>` : `<div class="muted small">No explicit checks recorded.</div>`}
+      ${inc.benign_applied.length ? `<div class="muted small" style="margin:14px 0 8px">Factors that lowered confidence:</div><ul class="checks warn">${inc.benign_applied.map(r=>`<li>${esc(r)}</li>`).join("")}</ul>` : ""}</div>
+    <div class="panel sect">
+      <div class="sect-title"><h3>Recommended Response</h3></div>
+      <ol class="actions-list">${inc.actions.map(a=>`<li>${esc(a)}</li>`).join("")}</ol>
+      <details style="margin-top:14px"><summary>How the ${inc.score}% confidence was calculated</summary><table><tbody>${bd}</tbody></table>
+        <div class="muted small" style="margin-top:8px">Findings combine as 1 − ∏(1 − 0.9 × confidence). Bonuses reward attacks that span several kill-chain stages in a plausible order (order consistency ${Math.round(inc.order_score*100)}%).</div></details></div>
+  </div>`;
+}
+
+function stepHtml(s, i){
+  const si = Math.max(0, STAGES.indexOf(s.stage)), col = STAGE_COL[si];
+  const up = s.positive.map(p => `<div class="up">▲ ${esc(p)}</div>`).join("");
+  const down = s.benign.map(b => `<div class="down">▼ ${esc(b.reason)}</div>`).join("");
+  return `<article class="step" style="--c:${col}" data-step="${i}">
+    <div class="row1"><span class="time">${fmtT(s.start)}</span><span class="chip"><span class="dot" style="background:${col}"></span>${esc(s.stage)}</span>
+      <span class="chip mono" title="${esc(s.technique_name)}">${esc(s.technique)}</span>
+      <span class="conf" style="--w:${Math.round(s.confidence*100)}%;--c:${col}"><i></i>${Math.round(s.confidence*100)}%</span></div>
+    <h4>${esc(s.title)}</h4><p>${esc(s.detail)}</p>
+    ${(up||down) ? `<div class="notes">${up}${down}</div>` : ""}
+    <button class="btn sm evbtn" data-ev="${esc(s.event_ids.slice(0,40).join(","))}" data-total="${s.evidence_count}">Show ${num(s.evidence_count)} log line${s.evidence_count>1?"s":""}</button>
+    <div class="evidence-slot"></div></article>`;
+}
+
+function graphSvg(g){
+  const cols = {ip:[], user:[], host:[], dst:[]};
+  g.nodes.forEach(n => cols[n.type].push(n));
+  const X = {ip:130, user:340, host:540, dst:700}, W = {ip:150, user:140, host:100, dst:150};
+  const rows = Math.max(...Object.values(cols).map(c => c.length), 1), H = rows*58 + 56, pos = {};
+  for (const t of Object.keys(cols)) cols[t].forEach((n,i) => { const off = (rows - cols[t].length) * 29; pos[n.id] = {x:X[t], y:44 + off + i*58, w:W[t]}; });
+  let out = `<svg class="graph" viewBox="0 0 800 ${H}" role="img" aria-label="Graph of attacker IPs, accounts, hosts and destinations">`;
+  [["ip","Attacker IPs"],["user","Accounts"],["host","Hosts"],["dst","Exfil Destination"]].forEach(([t,l]) => { if (cols[t].length) out += `<text class="colhead" x="${X[t]}" y="16" text-anchor="middle">${l}</text>`; });
+  g.edges.forEach(e => {
+    const a = pos[e.from], b = pos[e.to]; if (!a || !b) return;
+    let d, lx, ly;
+    if (e.dashed){ const x = a.x - a.w/2, bulge = 26 + Math.abs(a.y-b.y)/6; d = `M${x},${a.y} C${x-bulge},${a.y} ${x-bulge},${b.y} ${x},${b.y}`; lx = x-bulge*0.75; ly = (a.y+b.y)/2; }
+    else { const x1 = a.x + a.w/2, x2 = b.x - b.w/2, mx = (x1+x2)/2; d = `M${x1},${a.y} C${mx},${a.y} ${mx},${b.y} ${x2},${b.y}`; lx = mx; ly = (a.y+b.y)/2 - 6; }
+    out += `<path class="g-edge ${e.dashed?"dashed":""}" data-step="${e.step}" d="${d}"/>`;
+    out += `<text class="g-lbl" data-step="${e.step}" x="${lx}" y="${ly}" text-anchor="${e.dashed?"end":"middle"}">${esc(e.label)}</text>`;
+  });
+  g.nodes.forEach(n => { const p = pos[n.id];
+    out += `<g class="g-node ${n.type}" data-step="${n.step}"><rect x="${p.x-p.w/2}" y="${p.y-16}" width="${p.w}" height="32" rx="8"/><text x="${p.x}" y="${p.y+4}" text-anchor="middle">${esc(n.label.length>20?n.label.slice(0,19)+"…":n.label)}</text></g>`; });
+  return out + `</svg>`;
+}
+
+function entitiesView(){
+  const rows = S.report.entities.map(e => `<tr><td><span class="chip">${e.type}</span></td><td class="mono">${esc(e.id)}</td>
+    <td><span class="bar" style="--w:${e.risk}%;--c:${e.risk>=80?"var(--red)":e.risk>=60?"var(--orange)":"var(--amber)"}"></span>${e.risk}</td>
+    <td>${e.tags.map(t=>`<span class="chip">${esc(t)}</span>`).join(" ")}</td><td>${e.incident ? `<button class="btn sm" data-goto="${e.incident}">${e.incident}</button>` : '<span class="muted">alert only</span>'}</td></tr>`).join("");
+  return `<div class="panel"><div class="sect"><div class="sect-title"><h3>Suspect Entities</h3></div><div class="muted small">IPs, accounts and hosts ranked by risk, with the role each one played.</div></div>
+    <div class="tablewrap"><table><thead><tr><th>Type</th><th>Entity</th><th>Risk</th><th>Role</th><th>Incident</th></tr></thead><tbody>${rows || `<tr><td colspan="5" class="muted">Nothing suspicious.</td></tr>`}</tbody></table></div></div>`;
+}
+
+function qualityView(){
+  const R = S.report;
+  const q = R.quarantine.map(x => `<tr><td class="mono">${esc(x.file)}:${x.line}</td><td>${esc(x.reason)}</td><td class="mono small">${esc(x.raw)}</td></tr>`).join("");
+  const det = Object.entries(R.detectors).map(([k,v]) => `<span class="chip">${esc(k.replace(/_/g," "))}: ${v}</span>`).join(" ");
+  return `<div class="panel"><div class="sect"><div class="sect-title"><h3>Data Quality</h3></div><div class="muted small">Messy input never stops the analysis. Unreadable lines are set aside with a reason; overlapping exports are de-duplicated; mixed time zones are normalised to UTC.</div></div>
+    <div class="tablewrap">${fileTable(R.files)}</div>
+    <div class="sect"><div class="small muted">Duplicate lines dropped across files: <b>${R.stats.duplicates_dropped}</b>. Findings raised by each detector: ${det}</div>
+    ${R.warnings.length ? `<ul class="plain small" style="margin-top:10px;color:var(--amber)">${R.warnings.map(w=>`<li>${esc(w)}</li>`).join("")}</ul>` : ""}</div></div>
+    <div class="panel" style="margin-top:20px"><div class="sect"><div class="sect-title"><h3>Lines Set Aside</h3><span class="sect-badge">${num(R.stats.quarantined)}${R.quarantine.length < R.stats.quarantined ? " · first " + R.quarantine.length + " shown" : ""}</span></div></div>
+    <div class="tablewrap"><table><thead><tr><th>Location</th><th>Reason</th><th>Content</th></tr></thead><tbody>${q || `<tr><td colspan="3" class="muted">Every line was readable.</td></tr>`}</tbody></table></div></div>`;
+}
+
+function evalView(){
+  const e = S.evalRes;
+  if (!e) return `<div class="panel loading"><div class="spin"></div><div><b>Scoring against the hidden ground truth…</b></div></div>`;
+  const pct = x => (x*100).toFixed(1) + "%";
+  const dec = Object.entries(e.decoys_suppressed).filter(([k]) => e.truth.decoys_present[k]).map(([k,v]) => `<li>${esc(k)}: ${v ? "correctly not flagged" : "<b>flagged (false alarm)</b>"}</li>`).join("");
+  return `<div class="panel sect"><div class="sect-title"><h3>Accuracy Check</h3><span class="sect-badge">Synthetic evaluation</span></div><div class="muted small" style="max-width:80ch">This scenario was generated with known answers. Below, Spoor's output is compared with the truth that was hidden from it. <strong style="color:var(--ink)">This measures behaviour on synthetic data, not real-world accuracy.</strong></div></div>
+    <div class="cards" style="margin-top:20px">
+      <div class="panel card good"><b>${pct(e.event_recall)}</b><span>Attack lines found (${e.true_positive_events}/${e.attack_events_total})</span></div>
+      <div class="panel card good"><b>${pct(e.event_precision)}</b><span>Flagged lines truly malicious</span></div>
+      <div class="panel card"><b>${e.attacker_ips_recovered}/${e.attacker_ips_total}</b><span>Attacker IPs recovered</span></div>
+      <div class="panel card"><b>${e.stages_found}/${e.stages_expected}</b><span>Kill-chain stages found</span></div>
+      <div class="panel card ${e.merged_into_single_campaign?"good":""}"><b>${e.merged_into_single_campaign ? "Yes" : "No"}</b><span>All IPs merged into one campaign</span></div>
+      <div class="panel card ${e.false_incidents===0?"good":""}"><b>${e.false_incidents}</b><span>False-alarm incidents</span></div></div>
+    <div class="two" style="margin-top:20px"><div class="panel sect"><div class="sect-title"><h3>Benign Decoys Planted</h3></div><ul class="checks" style="margin-top:8px">${dec}</ul></div>
+      <div class="panel sect"><div class="sect-title"><h3>The Hidden Answer</h3></div><ul class="plain small"><li>Attacker IPs: <span class="mono">${e.truth.attacker_ips.join(", ")}</span></li><li>Compromised account: <span class="mono">${esc(e.truth.victim_user)}</span>, backdoor account <span class="mono">${esc(e.truth.new_account)}</span></li><li>Data sent to: <span class="mono">${esc(e.truth.exfil_dst)}</span> (${(e.truth.exfil_bytes/1024**3).toFixed(2)} GB)</li><li>Scanner fingerprint: <span class="mono">${esc(e.truth.toolkit)}</span></li></ul></div></div>`;
+}
+
+async function loadEval(){
+  try { const r = await api("/api/evaluate"); S.evalRes = await r.json(); render(); }
+  catch(e){ toast(e.message, true); S.tab = "incidents"; render(); }
+}
+
+function bindReport(){
+  const range = $("#rp-range"); if (range){ range.oninput = () => { stopReplay(); showStep(parseInt(range.value, 10)); }; }
+  const play = $("#rp-play"); if (play){ play.onclick = () => (S.timer ? (stopReplay(), showStep(curInc().steps.length - 1)) : startReplay()); }
+}
+function curInc(){ return S.report?.incidents.find(i => i.id === S.sel); }
+function showStep(n){
+  const inc = curInc(); if (!inc) return;
+  const last = inc.steps.length - 1, all = n >= last;
+  document.querySelectorAll("#tl .step").forEach(el => { const i = +el.dataset.step; el.classList.toggle("dim", !all && i > n); el.classList.toggle("now", !all && i === n); });
+  document.querySelectorAll("svg.graph [data-step]").forEach(el => el.classList.toggle("faded", !all && +el.dataset.step > n));
+  const seen = new Set(inc.steps.filter((s,i) => all || i <= n).map(s => s.stage));
+  document.querySelectorAll(".stg").forEach(el => { const on = seen.has(el.dataset.stage); el.classList.toggle("on", on); el.classList.toggle("dim", !on); });
+  const rng = $("#rp-range"); if (rng) rng.value = n;
+  const lab = $("#rp-label"); if (lab) lab.textContent = all ? `All ${inc.steps.length} steps shown` : `Step ${n+1} of ${inc.steps.length} · ${fmtT(inc.steps[n].start)} UTC`;
+  if (!all){ const el = document.querySelector(`#tl .step[data-step="${n}"]`); el?.scrollIntoView({block:"center", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"}); }
+}
+function startReplay(){
+  const inc = curInc(); if (!inc) return; let n = 0;
+  $("#rp-play").textContent = "■ Stop"; showStep(0);
+  S.timer = setInterval(() => { n++; if (n >= inc.steps.length){ stopReplay(); showStep(inc.steps.length - 1); return; } showStep(n); }, 1500);
+}
+function stopReplay(){ if (S.timer){ clearInterval(S.timer); S.timer = null; } const p = $("#rp-play"); if (p) p.textContent = "▶ Play Attack"; }
+
+document.addEventListener("click", async ev => {
+  const t = ev.target.closest("button, a"); if (!t || t.tagName === "A") return;
+  if (t.dataset.act === "gen") return generate();
+  if (t.dataset.act === "up") return $("#file").click();
+  if (t.dataset.act === "analyze") return analyze();
+  if (t.dataset.tab){ S.tab = t.dataset.tab; return render(); }
+  if (t.dataset.list){ S.list = t.dataset.list; S.sel = S.list === "incidents" ? (S.report.incidents[0]?.id || null) : null; return render(); }
+  if (t.dataset.inc){ S.sel = t.dataset.inc; return render(); }
+  if (t.dataset.alert != null){ S.sel = "a" + t.dataset.alert; return render(); }
+  if (t.dataset.sup != null){ S.sel = "s" + t.dataset.sup; return render(); }
+  if (t.dataset.goto){ S.tab = "incidents"; S.list = "incidents"; S.sel = t.dataset.goto; return render(); }
+  if (t.dataset.ev != null){
+    const slot = t.parentElement.querySelector(".evidence-slot");
+    if (slot.innerHTML){ slot.innerHTML = ""; t.textContent = t.textContent.replace("Hide", "Show"); return; }
+    t.disabled = true;
+    try {
+      const rows = await (await api("/api/events?ids=" + t.dataset.ev)).json();
+      const lines = rows.map(r => `<div><span class="loc">${esc(r.file)}:${r.line}  </span>${esc(r.raw)}</div>`).join("");
+      const more = +t.dataset.total > rows.length ? `<div class="loc">… ${num(+t.dataset.total - rows.length)} more lines not shown</div>` : "";
+      slot.innerHTML = `<div class="evidence">${lines}${more}</div>`; t.textContent = t.textContent.replace("Show", "Hide");
+    } catch(e){ toast(e.message, true); }
+    t.disabled = false;
+  }
+});
+$("#btn-gen").onclick = generate;
+$("#btn-up").onclick = () => $("#file").click();
+$("#file").onchange = e => upload(e.target.files);
+render();
+</script>
+</body>
+</html>

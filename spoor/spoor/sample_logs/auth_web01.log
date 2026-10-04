@@ -1,0 +1,307 @@
+Oct  1 13:18:07 web01 sshd[19323]: Failed password for invalid user oracle from 193.254.174.236 port 33763 ssh2
+Oct  1 13:18:10 web01 sshd[22573]: Failed password for invalid user pi from 193.254.174.236 port 3939 ssh2
+Oct  1 13:20:52 web01 CRON[4937]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  1 13:46:48 web01 CRON[14234]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  1 13:46:59 web01 sshd[17573]: Failed password for invalid user ubuntu from 193.94.243.117 port 14349 ssh2
+Oct  1 13:47:02 web01 sshd[18718]: Failed password for invalid user user from 193.94.243.117 port 26497 ssh2
+Oct  1 13:57:00 web01 sshd[5837]: Accepted password for ravi from 103.29.74.210 port 44204 ssh2
+Oct  1 13:57:07 web01 sshd[6498]: Failed password for invalid user guest from 91.211.52.36 port 30054 ssh2
+Oct  1 13:57:40 web01 sudo:   ravi : TTY=pts/0 ; PWD=/home/ravi ; USER=root ; COMMAND=/usr/bin/apt upgrade -y
+Oct  1 14:07:16 web01 sshd[24103]: Failed password for root from 62.17.236.254 port 38742 ssh2
+Oct  1 14:46:58 web01 sshd[11924]: Accepted publickey for jenkins from 10.0.4.4 port 44343 ssh2
+Oct  1 14:53:23 web01 sshd[6669]: Failed password for invalid user git from 37.23.29.2 port 2954 ssh2
+Oct  1 14:53:26 web01 sshd[28957]: Failed password for invalid user pi from 37.23.29.2 port 11976 ssh2
+Oct  1 14:54:51 web01 sshd[29198]: Accepted password for dave from 37.193.198.151 port 24369 ssh2
+Oct  1 15:06:33 web01 sshd[13064]: Failed password for invalid user git from 62.181.55.67 port 15210 ssh2
+Oct  1 15:30:52 web01 sshd[1918]: Accepted publickey for dave from 37.193.198.151 port 25534 ssh2
+Oct  1 15:46:26 web01 CRON[23592]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  1 15:54:44 web01 CRON[17622]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  1 17:19:02 web01 sshd[19920]: Accepted password for bob from 138.227.58.230 port 44942 ssh2
+Oct  1 17:39:32 web01 sshd[25983]: Failed password for invalid user git from 138.54.206.61 port 17921 ssh2
+Oct  1 17:39:35 web01 sshd[16113]: Failed password for root from 138.54.206.61 port 59756 ssh2
+Oct  1 17:39:38 web01 sshd[11766]: Failed password for invalid user pi from 138.54.206.61 port 40942 ssh2
+Oct  1 18:49:22 web01 CRON[27359]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  1 18:56:20 web01 sshd[9872]: Failed password for invalid user ubuntu from 109.157.244.234 port 33258 ssh2
+Oct  1 19:36:43 web01 sshd[25448]: Failed password for root from 77.191.238.126 port 42855 ssh2
+Oct  1 19:36:49 web01 sshd[10537]: Failed password for invalid user test from 77.191.238.126 port 33197 ssh2
+Oct  1 22:22:00 web01 sshd[28967]: Accepted publickey for dave from 37.193.198.151 port 1742 ssh2
+Oct  1 22:23:00 web01 sshd[29610]: Accepted publickey for priya from 109.62.1.158 port 27925 ssh2
+Oct  1 22:29:00 web01 sshd[18946]: Accepted publickey for alice from 138.82.129.244 port 61196 ssh2
+Oct  1 23:08:41 web01 CRON[9265]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  2 00:00:01 web01 CRON[12787]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  2 00:13:51 web01 CRON[19338]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  2 01:38:39 web01 sshd[31413]: Failed password for invalid user pi from 37.123.30.58 port 21283 ssh2
+Oct  2 01:50:31 web01 CRON[1011]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  2 02:02:31 web01 sshd[15512]: Failed password for invalid user pi from 193.150.229.148 port 10237 ssh2
+Oct  2 02:14:19 web01 CRON[23126]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  2 02:28:42 web01 CRON[26823]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  2 02:43:14 web01 sshd[15529]: Failed password for invalid user pi from 5.27.250.70 port 48829 ssh2
+Oct  3 11:00:00 web01 sshd[2]: Failed password for root from 999.1.1.1 port 22 ssh2
+Oct  2 03:38:00 web01 sshd[14631]: Accepted publickey for ravi from 103.29.74.210 port 35598 ssh2
+Oct  2 03:40:00 web01 sshd[24259]: Accepted publickey for carol from 62.201.147.141 port 17784 ssh2
+Oct  2 03:40:00 web01 sshd[26076]: Accepted publickey for priya from 109.62.1.158 port 38895 ssh2
+Oct  2 03:40:00 web01 sshd[25493]: Accepted publickey for ravi from 103.29.74.210 port 1180 ssh2
+Oct  2 03:40:45 web01 sudo:   ravi : TTY=pts/0 ; PWD=/home/ravi ; USER=root ; COMMAND=/bin/systemctl restart nginx
+Oct  2 04:53:46 web01 CRON[26220]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  2 05:05:45 web01 sshd[13431]: Failed password for invalid user ubuntu from 103.203.77.46 port 43138 ssh2
+Oct  2 05:05:54 web01 sshd[16022]: Failed password for invalid user oracle from 103.203.77.46 port 18629 ssh2
+Oct  2 06:56:42 web01 CRON[17911]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  2 08:08:00 web01 sshd[23370]: Accepted publickey for alice from 138.82.129.244 port 2373 ssh2
+Oct  2 08:16:00 web01 sshd[20875]: Accepted publickey for ravi from 103.29.74.210 port 37430 ssh2
+Oct  2 08:27:00 web01 sshd[8319]: Accepted publickey for dave from 37.193.198.151 port 46562 ssh2
+Oct  2 08:34:00 web01 sshd[4470]: Accepted publickey for carol from 62.201.147.141 port 28851 ssh2
+Oct  2 08:46:48 web01 CRON[31433]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  2 09:03:56 web01 CRON[7428]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  2 09:20:12 web01 sshd[28451]: Accepted publickey for jenkins from 10.0.4.4 port 42056 ssh2
+Oct  2 09:26:19 web01 sshd[13915]: Accepted publickey for bob from 138.227.58.230 port 40777 ssh2
+Oct  2 09:30:24 web01 CRON[2495]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+@@@@ corrupted entry ####
+Oct  2 09:48:22 web01 sshd[21613]: Failed password for invalid user postgres from 141.183.232.243 port 41541 ssh2
+Oct  2 09:55:15 web01 CRON[13253]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  2 10:09:18 web01 CRON[12895]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  2 10:43:39 web01 sshd[14609]: Accepted publickey for bob from 138.227.58.230 port 58313 ssh2
+Oct  2 10:49:56 web01 sshd[17596]: Failed password for invalid user pi from 194.213.32.245 port 61251 ssh2
+Oct  2 10:56:12 web01 sshd[18602]: Accepted publickey for deploy from 10.0.4.4 port 62440 ssh2
+Oct  2 12:03:04 web01 sshd[29389]: Accepted password for alice from 138.82.129.244 port 62309 ssh2
+Oct  2 12:07:44 web01 sshd[29551]: Accepted publickey for bob from 138.227.58.230 port 39643 ssh2
+Oct  2 12:23:16 web01 sshd[4095]: Failed password for invalid user guest from 185.87.99.246 port 31796 ssh2
+Oct  2 12:23:22 web01 sshd[29078]: Failed password for invalid user postgres from 185.87.99.246 port 29197 ssh2
+Oct  2 13:08:16 web01 CRON[7070]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  2 13:50:30 web01 sshd[20665]: Accepted password for alice from 138.82.129.244 port 3908 ssh2
+Oct  2 13:58:36 web01 sshd[20180]: Failed password for invalid user guest from 185.39.103.184 port 35065 ssh2
+Oct  2 13:58:39 web01 sshd[8629]: Failed password for invalid user pi from 185.39.103.184 port 15433 ssh2
+Oct  2 14:09:48 web01 CRON[22183]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  2 14:30:04 web01 sshd[27054]: Accepted password for priya from 109.62.1.158 port 53342 ssh2
+Oct  2 14:50:14 web01 CRON[17326]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  2 15:01:40 web01 CRON[30308]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  2 15:04:54 web01 sshd[19002]: Accepted publickey for dave from 37.193.198.151 port 19141 ssh2
+Oct  2 15:14:57 web01 CRON[29260]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  2 15:36:23 web01 sshd[11647]: Failed password for invalid user git from 91.188.97.95 port 50511 ssh2
+Oct  2 15:36:29 web01 sshd[27238]: Failed password for invalid user git from 91.188.97.95 port 35154 ssh2
+Oct  2 15:43:21 web01 sshd[12627]: Accepted publickey for jenkins from 10.0.4.4 port 3824 ssh2
+Oct  2 16:34:04 web01 CRON[14300]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  2 16:35:22 web01 sshd[9158]: Accepted publickey for dave from 37.193.198.151 port 37219 ssh2
+Oct  2 17:14:40 web01 CRON[17943]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  2 17:22:54 web01 sshd[31106]: Accepted password for ravi from 103.29.74.210 port 42648 ssh2
+Oct  2 17:23:34 web01 sudo:   ravi : TTY=pts/0 ; PWD=/home/ravi ; USER=root ; COMMAND=/bin/journalctl -u nginx
+Oct  2 17:30:56 web01 CRON[10984]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  2 17:58:31 web01 sshd[1478]: Failed password for invalid user pi from 159.139.216.199 port 4366 ssh2
+Oct  2 18:05:31 web01 sshd[6750]: Failed password for root from 193.73.66.74 port 31142 ssh2
+Oct  2 18:05:37 web01 sshd[14691]: Failed password for invalid user ubuntu from 193.73.66.74 port 55185 ssh2
+Oct  2 18:17:30 web01 CRON[11835]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  2 19:45:22 web01 CRON[4109]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  2 20:10:49 web01 CRON[15406]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  2 22:47:03 web01 CRON[13688]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  2 23:00:09 web01 CRON[21948]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  2 23:35:23 web01 sshd[29155]: Failed password for root from 141.178.78.91 port 62622 ssh2
+Oct  3 01:38:46 web01 CRON[7445]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  3 01:46:31 web01 CRON[18451]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  3 02:44:55 web01 CRON[17947]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  3 03:16:00 web01 sshd[25397]: Accepted publickey for ravi from 103.29.74.210 port 26261 ssh2
+Oct  3 03:16:45 web01 sudo:   ravi : TTY=pts/0 ; PWD=/home/ravi ; USER=root ; COMMAND=/bin/systemctl restart nginx
+Oct  3 04:28:17 web01 CRON[22120]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  3 07:06:30 web01 CRON[18142]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  3 09:01:31 web01 sshd[26060]: Accepted publickey for priya from 109.62.1.158 port 30101 ssh2
+Oct  3 09:12:48 web01 sshd[13134]: Accepted publickey for priya from 109.62.1.158 port 3566 ssh2
+Oct  3 09:27:29 web01 sshd[5674]: Accepted publickey for alice from 138.82.129.244 port 31984 ssh2
+Oct  3 09:40:13 web01 sshd[13681]: Accepted password for ravi from 103.29.74.210 port 11946 ssh2
+Oct  3 09:40:53 web01 sudo:   ravi : TTY=pts/0 ; PWD=/home/ravi ; USER=root ; COMMAND=/usr/bin/apt upgrade -y
+Oct  3 09:53:48 web01 sshd[26540]: Failed password for invalid user oracle from 138.164.75.179 port 52238 ssh2
+Oct  3 10:00:11 web01 sshd[2175]: Accepted publickey for ravi from 103.29.74.210 port 63123 ssh2
+Oct  3 10:00:51 web01 sudo:   ravi : TTY=pts/0 ; PWD=/home/ravi ; USER=root ; COMMAND=/bin/journalctl -u nginx
+Oct  3 10:32:26 web01 sshd[19186]: Accepted publickey for deploy from 10.0.4.4 port 25128 ssh2
+Oct  3 11:04:12 web01 sshd[20992]: Failed password for invalid user user from 37.80.66.188 port 15698 ssh2
+Oct  3 11:14:46 web01 sshd[28480]: Accepted password for carol from 62.201.147.141 port 31597 ssh2
+Oct  3 11:21:03 web01 CRON[9762]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  3 11:37:45 web01 sshd[20385]: Accepted publickey for deploy from 10.0.4.4 port 14378 ssh2
+Oct  3 11:46:00 web01 sshd[4369]: Failed password for priya from 109.62.1.158 port 28582 ssh2
+Oct  3 11:46:11 web01 sshd[2399]: Failed password for priya from 109.62.1.158 port 36298 ssh2
+Oct  3 11:46:22 web01 sshd[22559]: Failed password for priya from 109.62.1.158 port 59558 ssh2
+Oct  3 11:46:33 web01 sshd[30864]: Failed password for priya from 109.62.1.158 port 19264 ssh2
+Oct  3 11:46:44 web01 sshd[18218]: Failed password for priya from 109.62.1.158 port 63132 ssh2
+Oct  3 11:46:55 web01 sshd[1033]: Failed password for priya from 109.62.1.158 port 31402 ssh2
+Oct  3 11:47:15 web01 sshd[19497]: Accepted password for priya from 109.62.1.158 port 56150 ssh2
+Oct  3 11:52:37 web01 sshd[10468]: Accepted publickey for jenkins from 10.0.4.4 port 60989 ssh2
+Oct  3 12:22:11 web01 CRON[1703]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  3 12:54:31 web01 sshd[3340]: Failed password for invalid user oracle from 193.166.160.139 port 17155 ssh2
+Oct  3 13:04:16 web01 CRON[11251]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  3 13:29:33 web01 sshd[27244]: Accepted publickey for dave from 37.193.198.151 port 18449 ssh2
+Oct  3 13:41:05 web01 sshd[22256]: Failed password for root from 159.194.18.13 port 63117 ssh2
+Oct  3 13:43:17 web01 sshd[6049]: Failed password for invalid user pi from 77.141.87.33 port 54018 ssh2
+Oct  3 13:43:23 web01 sshd[16835]: Failed password for invalid user user from 77.141.87.33 port 55468 ssh2
+Oct  3 14:35:05 web01 sshd[15972]: Accepted publickey for carol from 62.201.147.141 port 6215 ssh2
+Oct  3 14:44:51 web01 sshd[11203]: Accepted password for dave from 37.193.198.151 port 49831 ssh2
+Oct  3 15:05:33 web01 sshd[5498]: Failed password for invalid user oracle from 89.216.100.134 port 17798 ssh2
+Oct  3 15:05:39 web01 sshd[27398]: Failed password for invalid user admin from 89.216.100.134 port 41273 ssh2
+Oct  3 15:14:41 web01 sshd[23345]: Accepted publickey for alice from 138.82.129.244 port 31181 ssh2
+Oct  3 15:24:09 web01 CRON[15176]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  3 15:53:05 web01 sshd[18325]: Failed password for invalid user postgres from 185.22.74.24 port 5159 ssh2
+Oct  3 16:02:32 web01 sshd[5807]: Accepted publickey for deploy from 10.0.4.4 port 52296 ssh2
+Oct  3 16:11:31 web01 CRON[7577]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  3 16:44:27 web01 sshd[12797]: Accepted password for alice from 138.82.129.244 port 58290 ssh2
+Oct  3 17:04:47 web01 sshd[16998]: Accepted publickey for deploy from 10.0.4.4 port 13911 ssh2
+Oct  3 17:16:13 web01 sshd[21120]: Failed password for invalid user git from 141.217.208.152 port 60654 ssh2
+Oct  3 17:22:26 web01 CRON[20241]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  3 17:25:20 web01 sshd[7981]: Failed password for invalid user test from 159.188.30.232 port 62731 ssh2
+Oct  3 17:27:12 web01 sshd[7949]: Accepted password for carol from 62.201.147.141 port 58312 ssh2
+Oct  3 17:43:50 web01 sshd[2306]: Failed password for priya from 109.62.1.158 port 47956 ssh2
+Oct  3 17:44:00 web01 sshd[5194]: Accepted password for priya from 109.62.1.158 port 42620 ssh2
+Oct  3 19:12:50 web01 CRON[26369]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  3 20:24:20 web01 CRON[21687]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  3 20:38:43 web01 CRON[24816]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  3 20:42:23 web01 CRON[9620]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  3 20:50:53 web01 sshd[27610]: Failed password for invalid user pi from 159.158.14.53 port 32169 ssh2
+Oct  3 21:31:27 web01 sshd[23803]: Failed password for invalid user ubuntu from 194.17.217.120 port 29328 ssh2
+Oct  3 21:34:31 web01 CRON[15298]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  3 21:55:45 web01 CRON[4438]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  3 22:15:36 web01 sshd[16217]: Failed password for invalid user user from 193.124.198.206 port 21134 ssh2
+Oct  3 22:15:39 web01 sshd[3887]: Failed password for invalid user ubuntu from 193.124.198.206 port 15704 ssh2
+Oct  3 22:24:47 web01 sshd[16379]: Failed password for invalid user postgres from 103.211.174.175 port 12636 ssh2
+Oct  3 22:24:50 web01 sshd[12724]: Failed password for invalid user admin from 103.211.174.175 port 47680 ssh2
+Oct  3 23:41:18 web01 sshd[30779]: Failed password for invalid user postgres from 5.147.111.44 port 48603 ssh2
+Oct  4 00:04:40 web01 sshd[27101]: Failed password for invalid user admin from 45.221.136.35 port 25596 ssh2
+Oct  4 00:07:40 web01 CRON[9234]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+ts=??? level=warn msg=truncat
+Oct  4 00:47:34 web01 sshd[4700]: Failed password for invalid user pi from 159.154.167.65 port 19956 ssh2
+Oct  4 01:39:19 web01 CRON[1866]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  4 01:58:39 web01 sshd[22295]: Failed password for root from 109.3.209.229 port 38312 ssh2
+Oct  4 01:58:40 web01 sshd[7754]: Failed password for invalid user admin from 109.3.209.229 port 28065 ssh2
+Oct  4 01:58:42 web01 sshd[25219]: Failed password for invalid user ubuntu from 109.3.209.229 port 21763 ssh2
+Oct  4 01:58:44 web01 sshd[6163]: Failed password for invalid user test from 109.3.209.229 port 33139 ssh2
+Oct  4 01:58:46 web01 sshd[4589]: Failed password for invalid user oracle from 109.3.209.229 port 20194 ssh2
+Oct  4 01:58:48 web01 sshd[4519]: Failed password for invalid user git from 109.3.209.229 port 12707 ssh2
+Oct  4 01:58:50 web01 sshd[30877]: Failed password for invalid user postgres from 109.3.209.229 port 50433 ssh2
+Oct  4 01:58:52 web01 sshd[16101]: Failed password for root from 109.3.209.229 port 62151 ssh2
+Oct  4 01:58:53 web01 sshd[20346]: Failed password for invalid user admin from 109.3.209.229 port 11698 ssh2
+Oct  4 01:58:55 web01 sshd[14888]: Failed password for invalid user ubuntu from 109.3.209.229 port 8642 ssh2
+Oct  4 01:58:57 web01 sshd[13468]: Failed password for invalid user test from 109.3.209.229 port 38143 ssh2
+Oct  4 01:58:59 web01 sshd[29135]: Failed password for invalid user oracle from 109.3.209.229 port 2012 ssh2
+Oct  4 01:59:01 web01 sshd[3813]: Failed password for invalid user git from 109.3.209.229 port 61905 ssh2
+Oct  4 01:59:03 web01 sshd[4966]: Failed password for invalid user postgres from 109.3.209.229 port 14833 ssh2
+Oct  4 01:59:05 web01 sshd[28741]: Failed password for root from 109.3.209.229 port 62002 ssh2
+Oct  4 01:59:06 web01 sshd[11720]: Failed password for invalid user admin from 109.3.209.229 port 15342 ssh2
+Oct  4 01:59:08 web01 sshd[12291]: Failed password for invalid user ubuntu from 109.3.209.229 port 59162 ssh2
+Oct  4 01:59:10 web01 sshd[16011]: Failed password for invalid user test from 109.3.209.229 port 2629 ssh2
+Oct  4 01:59:12 web01 sshd[2036]: Failed password for invalid user oracle from 109.3.209.229 port 20642 ssh2
+Oct  4 01:59:14 web01 sshd[14572]: Failed password for invalid user git from 109.3.209.229 port 34795 ssh2
+Oct  4 01:59:16 web01 sshd[8495]: Failed password for invalid user postgres from 109.3.209.229 port 34882 ssh2
+Oct  4 01:59:18 web01 sshd[19167]: Failed password for root from 109.3.209.229 port 24421 ssh2
+Oct  4 01:59:19 web01 sshd[2412]: Failed password for invalid user admin from 109.3.209.229 port 30342 ssh2
+Oct  4 01:59:21 web01 sshd[14005]: Failed password for invalid user ubuntu from 109.3.209.229 port 36220 ssh2
+Oct  4 01:59:23 web01 sshd[24878]: Failed password for invalid user test from 109.3.209.229 port 23019 ssh2
+Oct  4 01:59:25 web01 sshd[2598]: Failed password for invalid user oracle from 109.3.209.229 port 62069 ssh2
+Oct  4 01:59:27 web01 sshd[27921]: Failed password for invalid user git from 109.3.209.229 port 10960 ssh2
+Oct  4 01:59:29 web01 sshd[26069]: Failed password for invalid user postgres from 109.3.209.229 port 10355 ssh2
+Oct  4 01:59:31 web01 sshd[25334]: Failed password for root from 109.3.209.229 port 57425 ssh2
+Oct  4 01:59:32 web01 sshd[20684]: Failed password for invalid user admin from 109.3.209.229 port 4462 ssh2
+Oct  4 01:59:34 web01 sshd[22395]: Failed password for invalid user ubuntu from 109.3.209.229 port 35742 ssh2
+Oct  4 01:59:36 web01 sshd[9756]: Failed password for invalid user test from 109.3.209.229 port 30722 ssh2
+Oct  4 01:59:38 web01 sshd[19813]: Failed password for invalid user oracle from 109.3.209.229 port 60576 ssh2
+Oct  4 01:59:40 web01 sshd[4408]: Failed password for invalid user git from 109.3.209.229 port 53448 ssh2
+Oct  4 01:59:42 web01 sshd[27555]: Failed password for invalid user postgres from 109.3.209.229 port 60733 ssh2
+Oct  4 01:59:44 web01 sshd[7992]: Failed password for root from 109.3.209.229 port 61344 ssh2
+Oct  4 01:59:45 web01 sshd[31373]: Failed password for invalid user admin from 109.3.209.229 port 14586 ssh2
+Oct  4 01:59:47 web01 sshd[24116]: Failed password for invalid user ubuntu from 109.3.209.229 port 58039 ssh2
+Oct  4 01:59:49 web01 sshd[25477]: Failed password for invalid user test from 109.3.209.229 port 19032 ssh2
+Oct  4 01:59:51 web01 sshd[941]: Failed password for invalid user oracle from 109.3.209.229 port 63379 ssh2
+Oct  4 01:59:53 web01 sshd[25744]: Failed password for invalid user git from 109.3.209.229 port 31727 ssh2
+Oct  4 01:59:55 web01 sshd[23503]: Failed password for invalid user postgres from 109.3.209.229 port 38378 ssh2
+Oct  4 01:59:57 web01 sshd[16648]: Failed password for root from 109.3.209.229 port 58246 ssh2
+Oct  4 01:59:58 web01 sshd[8114]: Failed password for invalid user admin from 109.3.209.229 port 38850 ssh2
+Oct  4 02:00:00 web01 sshd[12354]: Failed password for invalid user ubuntu from 109.3.209.229 port 54794 ssh2
+Oct  4 02:00:02 web01 sshd[20236]: Failed password for invalid user test from 109.3.209.229 port 41355 ssh2
+Oct  4 02:00:04 web01 sshd[21489]: Failed password for invalid user oracle from 109.3.209.229 port 12245 ssh2
+Oct  4 02:00:06 web01 sshd[16554]: Failed password for invalid user git from 109.3.209.229 port 44568 ssh2
+Oct  4 02:00:08 web01 sshd[13405]: Failed password for invalid user postgres from 109.3.209.229 port 4193 ssh2
+Oct  4 02:00:10 web01 sshd[2209]: Failed password for root from 109.3.209.229 port 2960 ssh2
+Oct  4 02:00:11 web01 sshd[23902]: Failed password for invalid user admin from 109.3.209.229 port 27367 ssh2
+Oct  4 02:00:13 web01 sshd[15030]: Failed password for invalid user ubuntu from 109.3.209.229 port 54336 ssh2
+Oct  4 02:00:15 web01 sshd[24758]: Failed password for invalid user test from 109.3.209.229 port 59536 ssh2
+Oct  4 02:00:17 web01 sshd[20696]: Failed password for invalid user oracle from 109.3.209.229 port 63988 ssh2
+Oct  4 02:00:19 web01 sshd[17208]: Failed password for invalid user git from 109.3.209.229 port 51662 ssh2
+Oct  4 02:00:21 web01 sshd[2933]: Failed password for invalid user postgres from 109.3.209.229 port 52738 ssh2
+Oct  4 02:00:23 web01 sshd[12399]: Failed password for root from 109.3.209.229 port 39372 ssh2
+Oct  4 02:01:47 web01 sshd[6617]: Failed password for deploy from 37.174.81.54 port 6642 ssh2
+Oct  4 02:01:53 web01 sshd[4238]: Failed password for deploy from 37.174.81.54 port 50442 ssh2
+Oct  4 02:01:59 web01 sshd[20591]: Failed password for deploy from 37.174.81.54 port 28396 ssh2
+Oct  4 02:02:04 web01 sshd[15414]: Failed password for deploy from 37.174.81.54 port 27240 ssh2
+Oct  4 02:02:08 web01 sshd[19415]: Failed password for deploy from 37.174.81.54 port 51501 ssh2
+Oct  4 02:02:12 web01 sshd[1478]: Failed password for deploy from 37.174.81.54 port 38586 ssh2
+Oct  4 02:02:18 web01 sshd[9715]: Failed password for deploy from 37.174.81.54 port 49429 ssh2
+Oct  4 02:02:22 web01 sshd[5400]: Failed password for deploy from 37.174.81.54 port 63712 ssh2
+Oct  4 02:02:28 web01 sshd[20770]: Failed password for deploy from 37.174.81.54 port 9237 ssh2
+Oct  4 02:02:31 web01 sshd[16260]: Failed password for deploy from 37.174.81.54 port 30432 ssh2
+Oct  4 02:02:35 web01 sshd[10968]: Failed password for deploy from 37.174.81.54 port 4248 ssh2
+Oct  4 02:02:41 web01 sshd[6143]: Failed password for deploy from 37.174.81.54 port 15804 ssh2
+Oct  4 02:02:45 web01 sshd[15172]: Failed password for deploy from 37.174.81.54 port 10026 ssh2
+Oct  4 02:02:51 web01 sshd[4610]: Failed password for deploy from 37.174.81.54 port 31756 ssh2
+Oct  4 02:02:55 web01 sshd[6046]: Failed password for deploy from 37.174.81.54 port 19540 ssh2
+Oct  4 02:03:01 web01 sshd[17584]: Failed password for deploy from 37.174.81.54 port 8182 ssh2
+Oct  4 02:03:06 web01 sshd[2073]: Failed password for deploy from 37.174.81.54 port 44352 ssh2
+Oct  4 02:03:10 web01 sshd[30870]: Failed password for deploy from 37.174.81.54 port 50299 ssh2
+Oct  4 02:03:15 web01 sshd[3776]: Failed password for deploy from 37.174.81.54 port 7106 ssh2
+Oct  4 02:03:19 web01 sshd[23617]: Failed password for deploy from 37.174.81.54 port 35762 ssh2
+Oct  4 02:03:23 web01 sshd[29590]: Failed password for deploy from 37.174.81.54 port 20131 ssh2
+Oct  4 02:03:27 web01 sshd[16960]: Failed password for deploy from 37.174.81.54 port 10869 ssh2
+Oct  4 02:03:31 web01 sshd[5539]: Failed password for deploy from 37.174.81.54 port 61448 ssh2
+Oct  4 02:03:34 web01 sshd[25545]: Failed password for deploy from 37.174.81.54 port 41930 ssh2
+Oct  4 02:03:37 web01 sshd[3973]: Failed password for deploy from 37.174.81.54 port 33067 ssh2
+Oct  4 02:03:42 web01 sshd[23432]: Failed password for deploy from 37.174.81.54 port 31257 ssh2
+Oct  4 02:03:46 web01 sshd[2860]: Failed password for deploy from 37.174.81.54 port 5867 ssh2
+Oct  4 02:03:52 web01 sshd[9630]: Failed password for deploy from 37.174.81.54 port 64784 ssh2
+Oct  4 02:03:55 web01 sshd[12039]: Failed password for deploy from 37.174.81.54 port 13822 ssh2
+Oct  4 02:04:01 web01 sshd[27156]: Failed password for deploy from 37.174.81.54 port 46801 ssh2
+Oct  4 02:04:06 web01 sshd[22825]: Failed password for deploy from 37.174.81.54 port 48521 ssh2
+Oct  4 02:04:12 web01 sshd[29005]: Failed password for deploy from 37.174.81.54 port 58283 ssh2
+Oct  4 02:04:16 web01 sshd[26589]: Failed password for deploy from 37.174.81.54 port 26216 ssh2
+Oct  4 02:04:22 web01 sshd[26229]: Failed password for deploy from 37.174.81.54 port 14309 ssh2
+Oct  4 02:04:25 web01 sshd[26774]: Failed password for deploy from 37.174.81.54 port 11103 ssh2
+Oct  4 02:04:31 web01 sshd[21553]: Failed password for deploy from 37.174.81.54 port 16131 ssh2
+Oct  4 02:04:35 web01 sshd[6849]: Failed password for deploy from 37.174.81.54 port 47298 ssh2
+Oct  4 02:04:40 web01 sshd[2435]: Failed password for deploy from 37.174.81.54 port 4708 ssh2
+Oct  4 02:04:43 web01 sshd[7690]: Failed password for deploy from 37.174.81.54 port 24520 ssh2
+Oct  4 02:04:49 web01 sshd[2153]: Failed password for deploy from 37.174.81.54 port 33620 ssh2
+Oct  4 02:04:53 web01 sshd[5032]: Failed password for deploy from 37.174.81.54 port 8450 ssh2
+Oct  4 02:04:56 web01 sshd[13360]: Failed password for deploy from 37.174.81.54 port 19512 ssh2
+[31mnot a log line[0m
+Oct  4 02:05:04 web01 sshd[24873]: Accepted password for deploy from 37.174.81.54 port 46144 ssh2
+Oct  4 02:07:12 web01 sudo:   deploy : TTY=pts/0 ; PWD=/home/deploy ; USER=root ; COMMAND=/bin/cat /etc/shadow
+Oct  4 02:08:06 web01 sudo:   deploy : TTY=pts/0 ; PWD=/home/deploy ; USER=root ; COMMAND=/usr/sbin/useradd -m -s /bin/bash dbus-helper
+Oct  4 02:08:07 web01 useradd[24184]: new user: name=dbus-helper, UID=1005, GID=1005, home=/home/dbus-helper, shell=/bin/bash
+Oct  4 02:08:35 web01 sudo:   deploy : TTY=pts/0 ; PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/tee -a /home/dbus-helper/.ssh/authorized_keys
+Oct  4 02:08:51 web01 sudo:   deploy : TTY=pts/0 ; PWD=/home/deploy ; USER=root ; COMMAND=/bin/chmod u+s /bin/bash
+Oct  4 02:25:31 web01 CRON[20984]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  4 02:39:06 web01 sshd[24178]: Accepted publickey for dbus-helper from 193.65.90.251 port 5217 ssh2
+Oct  4 03:39:00 web01 sshd[26595]: Accepted publickey for ravi from 103.29.74.210 port 21146 ssh2
+Oct  4 03:39:45 web01 sudo:   ravi : TTY=pts/0 ; PWD=/home/ravi ; USER=root ; COMMAND=/bin/systemctl restart nginx
+Oct  4 04:22:19 web01 CRON[24723]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  4 06:50:53 web01 sshd[21591]: Failed password for root from 89.106.9.212 port 31063 ssh2
+Oct  4 06:50:59 web01 sshd[924]: Failed password for invalid user oracle from 89.106.9.212 port 64718 ssh2
+Oct  4 07:01:19 web01 CRON[17751]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  4 08:28:22 web01 CRON[2564]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  4 09:05:27 web01 CRON[1685]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  4 09:06:19 web01 CRON[3264]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  4 09:10:08 web01 sshd[30434]: Accepted password for ravi from 103.29.74.210 port 40438 ssh2
+Oct  4 09:10:48 web01 sudo:   ravi : TTY=pts/0 ; PWD=/home/ravi ; USER=root ; COMMAND=/bin/journalctl -u nginx
+Oct  4 09:18:52 web01 CRON[28831]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  4 09:41:12 web01 sshd[3974]: Failed password for priya from 109.62.1.158 port 12483 ssh2
+Oct  4 09:41:22 web01 sshd[4478]: Failed password for priya from 109.62.1.158 port 42225 ssh2
+Oct  4 09:41:32 web01 sshd[12220]: Accepted publickey for priya from 109.62.1.158 port 35666 ssh2
+Oct  4 09:42:44 web01 sshd[24523]: Failed password for bob from 138.227.58.230 port 47172 ssh2
+Oct  4 09:42:54 web01 sshd[21587]: Accepted password for bob from 138.227.58.230 port 11138 ssh2
+Oct  4 09:52:06 web01 sshd[29277]: Accepted publickey for carol from 62.201.147.141 port 23497 ssh2
+Oct  4 10:02:12 web01 sshd[6698]: Accepted publickey for jenkins from 10.0.4.4 port 10505 ssh2
+Oct  4 10:03:46 web01 sshd[7246]: Accepted publickey for deploy from 10.0.4.4 port 29588 ssh2
+Oct  4 10:20:16 web01 sshd[13578]: Accepted publickey for jenkins from 10.0.4.4 port 8122 ssh2
+Oct  4 10:56:23 web01 CRON[7931]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  4 11:00:15 web01 sshd[31566]: Failed password for invalid user test from 138.236.127.38 port 59773 ssh2
+Oct  4 11:00:18 web01 sshd[28278]: Failed password for root from 138.236.127.38 port 33795 ssh2
+Oct  4 11:08:10 web01 sshd[6455]: Failed password for invalid user user from 193.84.223.94 port 47030 ssh2
+Oct  4 11:08:16 web01 sshd[31550]: Failed password for invalid user pi from 193.84.223.94 port 4180 ssh2
+Oct  4 11:11:11 web01 CRON[24375]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  4 12:09:14 web01 sshd[18144]: Failed password for invalid user user from 62.242.152.41 port 15443 ssh2
+Oct  4 12:09:17 web01 sshd[29675]: Failed password for invalid user ubuntu from 62.242.152.41 port 12288 ssh2
+Oct  4 12:16:25 web01 sshd[30199]: Failed password for alice from 138.82.129.244 port 30855 ssh2
+Oct  4 12:16:35 web01 sshd[9602]: Accepted publickey for alice from 138.82.129.244 port 25669 ssh2
+Oct  4 12:49:47 web01 CRON[30108]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Oct  4 12:52:21 web01 sshd[28383]: Accepted password for alice from 138.82.129.244 port 52556 ssh2
